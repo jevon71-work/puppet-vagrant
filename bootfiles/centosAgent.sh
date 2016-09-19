@@ -5,7 +5,7 @@
 yum remove -y -q epel-release
 yum clean all && yum update -y
 
-rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
+rpm -Uvh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
 
 yum clean all && yum update -y
 
