@@ -1,0 +1,24 @@
+# role-based puppet => role-based testing!!
+puppet.vm.local:
+  :roles:
+    - common
+    - puppet
+solr01.vm.local:
+  :roles:
+    - common
+    - solr
+solr02.vm.local:
+    - common
+    - solr
+zoo01.vm.local:
+  :roles:
+    - common
+    - zookeeper
+zoo02.vm.local:
+  :roles:
+    - common
+    - zookeeper
+zoo03.vm.local:
+  :roles:
+    - common
+    - zookeeper
