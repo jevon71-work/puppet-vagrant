@@ -2,13 +2,13 @@
 
 # === Class: solr::service
 
-class slr::service inherits solr {
+class jayeola-solr::service inherits jayeola-solr {
   service { 'solr':
     ensure      => running,
     enable      => true,
     hasrestart  => true,
     hasstatus   => true,
-    require     => Package['solr']
-    # pattern => 'solr',
+    require     => Package['tomcat6']
+    # pattern => 'tomcat6',
   }
 }

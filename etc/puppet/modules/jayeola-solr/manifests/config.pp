@@ -1,15 +1,23 @@
 # sources: http://fullstack-puppet-docs.readthedocs.io/en/latest/puppet_modules.html
 # Class: solr::config
+#
+# set up the solr version X installation
 
-# use this class to __configure__ what you want
+#
+#  === Actionz
+#  - create java symlink for tomcat
 
-Class solr::config inherits solr {
-  file { '/etc/solr.conf':
-    ensure  => file,
-    owner   => 'root',
-    gropup  => 'root',
-    mode    => '0644',
-    content =>  template($module_name/ntp.conf.erb),
+class jayeola-solr::config inherits jayeola-solr {
+
+  if $::operatingsystem == 'Ubuntu' {
+    file {'/usr/java':
+      ensure => directory,
+    }
+
+    file { '/usr/lib/jvm/java-7-openjdk-amd64':
+      ensure => 'symlink',
+      target => "/usr/java/default",
+      force  => true,
+    }
   }
-    
 }

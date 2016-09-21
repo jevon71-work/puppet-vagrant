@@ -1,15 +1,14 @@
-# == Class: solr
-# This is hte main solr class
-# Full description of class solr here.
+# == Class: jayeola-solr
+# This is hte main jayeola-solr class
 #
 # === Parameters
-#
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
+# - $my_solr_version
+# - $my_solr_url
+# - $my_solr_dest_dir
+# - $my_solr_user
+# - $my_solr_group
+
+
 # === Variables
 #
 # Here you should define a list of variables that this module would require.
@@ -23,21 +22,19 @@
 #
 # === Examples
 #
-#  class { 'solr':
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#  class { 'jayeola-solr':
+#    my_solr_version => version,
 #  }
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# John Maclean jayeola >at< gmail d>o<t com
 #
 # === Copyright
 #
-# Copyright 2016 Your name here, unless otherwise noted.
+# Copyright 2016 jayeola.
 #
-class solr {
-  include solr::install
-  include solr::config
-  include solr::service
-
+class jayeola-solr {
+  include jayeola-solr::install
+  include jayeola-solr::config
 }

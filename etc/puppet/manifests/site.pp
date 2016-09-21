@@ -5,10 +5,6 @@ node 'puppet.vm.vagrant' {
 }
 
 node /solr0/ {
-  notify {"helo solr nodes!":}
-  include solr
-}
-
-node /zk0/ {
-  notify {"hello zk nodes!":}
+  notify {"hello solr nodes!":}
+  include jayeola-solr
 }
