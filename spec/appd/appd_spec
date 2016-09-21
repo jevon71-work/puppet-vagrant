@@ -1,0 +1,37 @@
+require 'spec_helper'
+
+dirs = ['/opt/AppDynamics/AppAgent', '/opt/AppDynamics/MachineAgent' ]
+
+describe "tests for installation of appD version 4.1" do
+  dirs.each do |i|
+    describe file(i) do
+      it { should be_directory}
+      it { should be_owned_by activemq }
+      it { should be_grouped_into activemq }
+    end
+  end
+
+  describe file('/opt/AppDynamics/AppAgent/ver4.1.5.3/controller-info.xml') do
+    its(:content) { should match /<controller-host>dice.saas.appdynamics.com/}
+    its(:content) { should match /<controller-port>443/ }
+    its(:content) { should match /<controller-port>443/ }
+    its(:content) { should match /<controller-ssl-enabled>true/ }
+    its(:content) { should match /<account-name>dice/ }
+    its(:content) { should match /<account-access-key>65714c166c1e/ }
+    its(:content) { should match /<application-name>eFCPILOT/ }
+    its(:content) { should match /<tier-name>ActiveMQ/ }
+    its(:content) { should match /<node-name>activemq1.pilot/ }
+  end
+
+  describe file('/opt/AppDynamics/AppAgent/ver4.1.5.3/controller-info.xml') do
+    its(:content) { should match /<controller-host>dice.saas.appdynamics.com/ }
+    its(:content) { should match /<controller-port>443/ }
+    its(:content) { should match /<controller-ssl-enabled>true/ }
+    its(:content) { should match /<account-name>dice/ }
+    its(:content) { should match /<account-access-key>65714c166c1e/ }
+    its(:content) { should match /<application-name>AppName/ }
+    its(:content) { should match /<tier-name>tier/ }
+    its(:content) { should match /<node-name>NodeName/ }    
+  end
+
+end
