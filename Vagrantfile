@@ -5,10 +5,12 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
-    vb.memory = "1024"
+    vb.memory = "512"
   end
 
+  # everything is centos7.
   config.vm.box = "cx7"
+  # unless i say so
 
   config.vm.define "puppet", primary: true do |puppet|
     puppet.vm.hostname = "puppet.vm.vagrant"
@@ -20,6 +22,7 @@ Vagrant.configure(2) do |config|
 
   end
 
+  # centos7
   config.vm.define "solr01" do |solr01|
     solr01.vm.hostname = "solr01.vm.vagrant"
     solr01.vm.network "private_network", ip: "192.168.33.20"
@@ -32,15 +35,18 @@ Vagrant.configure(2) do |config|
     solr02.vm.provision "shell", path: "./bootfiles/centosAgent.sh"
   end
 
-  config.vm.define "zk01"  do |zk01|
-    zk01.vm.hostname = "zk01.vm.vagrant"
-    zk01.vm.network "private_network", ip: "192.168.33.48"
-    zk01.vm.provision "shell", path: "./bootfiles/centosAgent.sh"
+  # ubuntu14
+  config.vm.define "solr03"  do |solr03|
+    solr03.vm.box = "ux14"
+    solr03.vm.hostname = "solr03.vm.vagrant"
+    solr03.vm.network "private_network", ip: "192.168.33.48"
+    solr03.vm.provision "shell", path: "./bootfiles/ubuntuAgent.sh"
   end
 
-  config.vm.define "zk02" do |zk02|
-    zk02.vm.hostname = "zk02.vm.vagrant"
-    zk02.vm.network "private_network", ip: "192.168.33.59"
-    zk02.vm.provision "shell", path: "./bootfiles/centosAgent.sh"
+  config.vm.define "solr04" do |solr04|
+    solr04.vm.box = "ux14"
+    solr04.vm.hostname = "solr04.vm.vagrant"
+    solr04.vm.network "private_network", ip: "192.168.33.59"
+    solr04.vm.provision "shell", path: "./bootfiles/ubuntuAgent.sh"
   end
 end
