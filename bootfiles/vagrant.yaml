@@ -1,0 +1,67 @@
+---
+- name:  jcwlinux01
+  hostname: jcwlinux01.vm.local
+  box: centos7
+  ip: 192.168.40.201
+  ports: []
+  ram: 512
+- name:  jcwlinux02
+  hostname: jcwlinux02.vm.local
+  box: ubuntu-14-04-LTS-x64
+  ip: 192.168.40.211
+  ports: []
+  ram: 512
+# - name:  itjbpuppet
+#   hostname: puppet.vm.local
+#   box: ubuntu-14-04-LTS-x64
+#   ip: 192.168.40.5
+#   ports: []
+#   ram: 512
+# - name: itjbweb01
+#   hostname: web01.vm.local
+#   box: ubuntu-14-04-LTS-x64
+#   ip: 192.168.40.10
+#   ports: []
+#   ram: 128
+# - name: itjbweb02
+#   hostname: web02.vm.local
+#   box: ubuntu-14-04-LTS-x64
+#   ip: 192.168.40.15
+#   ports: []
+#   ram: 128
+# - name: itjbservice01
+#   hostname: service01.vm.local
+#   box: ubuntu-14-04-LTS-x64
+#   ip: 192.168.40.20
+#   ports: []
+#   ram: 512
+# - name: itjbservice02
+#   hostname: service02.vm.local
+#   box: ubuntu-14-04-LTS-x64
+#   ip: 192.168.40.25
+#   ports: []
+#   ram: 512
+# - name:    itjbsolrmstr01
+#   hostname: solrmstr01.vm.local
+#   ip: 192.168.40.30
+#   box: ubuntu-14-04-LTS-x64
+#   ports: []
+#   ram: 128
+# - name:    itjbsolrslv01
+#   hostname: solrslv01.vm.local
+#   ip: 192.168.40.35
+#   box: ubuntu-14-04-LTS-x64
+#   ports: []
+#   ram: 512
+# - name:    itjbsolrslv02
+#   hostname: solrslv02.vm.local
+#   ip: 192.168.40.40
+#   box: ubuntu-14-04-LTS-x64
+#   ports: []
+#   ram: 512
+# - name:    itjbmailgen01
+#   hostname: mailgen01.vm.local
+#   ip: 192.168.40.45
+#   box: ubuntu-14-04-LTS-x64
+#   ports: []
+#   ram: 512

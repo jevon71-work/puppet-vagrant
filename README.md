@@ -1,13 +1,30 @@
-# puppet-vagrant
+# vagrant-working
 
-## Objective(s)
+## Description
 
-- [x] A vagrant set up for puppet.
+This repository contains a Vagrantfile and some Serverspec to spin up a Linux-
+based environment so that I can work.  I will focus on using CentOS as my main
+system of choice, but will also have a Ubuntu box or two for testing purposes.
+I have started the repository by basing it on the code provided to create the
+Learning Puppet 4 book published by O'Reilly.
 
-- [x] Use this lab to test anything pupppet-related.
+## Objectives
 
-- [x] Use serverspec to test the vagrant boxes (prove my puppet-foo).
+I plan to provision and configure the systems using Puppet code, so each system
+will have everything I need to do my work:
 
+1.  Puppet 4 Agent installed
+2.  Terraform version 0.6.x (latest version)
+3.  Terraform version 0.7.x (latest "non-buggy" version)
+4.  Python 3 / PIP 3 - required for ssaml stuff created by Jeremy Witte
+5.  Git, so I can push / pull repos locally from GitHub / BitBucket
+6.  Serverspec, so I can test the effects of my code changes
+7.  TestKitchen, additional testing platform
+
+I will be expanding my requirements as I go - I would like to have a CI server
+as part of this environment, so I don't need to always manually run tests.
+Ultimately I would like to share this code base with other Systems Engineers at
+DHI Group Inc.
 
 ## Assumptions
 
@@ -22,15 +39,23 @@
 
 The state of my workstation at time of writing:-
 
+I am not really into Macs, so right now this is all on a Windows 7 machine.  I
+may switch to a Linux-based workstation in the future...
+
 ````bash
 vagrant --version
-Vagrant 1.8.1
+Vagrant 1.7.4
 
 ### For automajic handling of hostnames
 vagrant plugin install vagrant-hostmanager
 
+vagrant plugin list
+vagrant-hostmanager (1.8.1)
+vagrant-share (1.1.5, system)
+vagrant-vbguest (0.11.0)
+
 ruby --version
-ruby 2.0.0p648 (2015-12-16 revision 53162) [universal.x86_64-darwin15]
+ruby 2.2.4p230 (2015-12-16 revision 53155) [x64-mingw32]
 ````
 
 
@@ -38,10 +63,9 @@ ruby 2.0.0p648 (2015-12-16 revision 53162) [universal.x86_64-darwin15]
 ### Ruby gems - install me!!
 ````bash
 gem list | awk '/puppet |bundler|rake/'
-bundler (1.11.2)
-puppet (4.5.0 universal-darwin, 4.4.2 universal-darwin)
-rake (11.1.2, 10.5.0, 0.9.6)
-rspec-puppet (2.4.0, 2.0.1)
+bundler (1.12.5)
+puppet-lint (1.1.0)
+rake (10.4.2)
 ````
 
 ### Vagrant boxes
@@ -50,11 +74,8 @@ rspec-puppet (2.4.0, 2.0.1)
 vagrant status
 Current machine states:
 
-puppet
-solr01
-solr02
-zk01
-zk02
+jcwlinux01
+jcwlinux02
 ````
 
 ## Usage summary
@@ -66,36 +87,16 @@ zk02
 
 * `vagrant hostmanager` # automajic for /etc/hosts
 
-* `vagrant ssh puppet` # log into this box. do your puppet foo
-
-### inside puppetmaster
-
-* `sudo sh /vagrant/bootfiles/centosPM.sh` # install puppetmaster and *screen*
-
-* run `screen`
-
-* start puppet master with `puppet master --no-daemonize`
-
-* All hosts are *autosigned*. No need to sign certs.
-
-
-### inside puppet agent
-
-* `vagrant ssh [node]` # log into "agent". puppet agent foo here
-
-install puppet agent
-
-* `sudo sh /vagrant/bootfiles/centosPA.sh`
-
-Agent wil be autosigned. So from now run;
-
-* `puppet agent --test`
+* `vagrant ssh jcwlinux01` # log into this box. do your puppet foo
 
 ## Serverspec testing
 
-Bring all of the boxes up. Use `bundle install` to install serverspec. Vagrant boxes are now ready for testing.
+Bring all of the boxes up. Use `bundle install` to install serverspec. Vagrant
+boxes are now ready for testing.
 
-Refer to the available list of tests below. These tests are role-based, in the fact that I don't care where my boxes are, but what they __do__. Also refer to the tree below to add new roles for server testing.
+Refer to the available list of tests below. These tests are role-based, in the
+fact that I don't care where my boxes are, but what they __do__. Also refer to
+the tree below to add new roles for server testing.
 
 ### Role-based testing
 
@@ -111,7 +112,7 @@ solr
 Add your servers to the roles as shown below.
 
 ````bash
-head properties.yml                                                                                         ~/projects/LAXPT
+head properties.yml
 # role-based puppet => role-based testing!!
 puppet01.vm.local:
   :roles:
@@ -124,7 +125,8 @@ xmon.vm.local:
     - docker
 ````    
 
-Once you have added a new dir under spec and added some tests, they will be listed here.
+Once you have added a new dir under spec and added some tests, they will be
+listed here.
 
 
 ````bash
@@ -135,15 +137,12 @@ rake testing:solr01  # Run testing to solr01.vm.local
 rake testing:solr02  # Run testing to solr02.vm.local
 rake testing:zoo01   # Run testing to zoo01.vm.local
 rake testing:zoo02   # Run testing to zoo02.vm.local
-rake testing:zoo03   # Run testing to zoo03.vm.local                  # Run serverspec to all hosts
+rake testing:zoo03   # Run testing to zoo03.vm.local
+                     # Run serverspec to all hosts
 ````
 
 ## sources
 
-I nicked code from these sources
+This is forked from jayeola/puppet-vagrant, but has code from jayeola/LAXPT and jorhett/learning-puppet4.
 
-* https://goo.gl/MDNxR8
-
-* http://goo.gl/Y18HDe
-
-* all over the place ;-)
+I will also steal code from wherever seems appropriate...
