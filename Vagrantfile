@@ -36,6 +36,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
+  config.vm.define "jcwlinux03", primary: true do |jcwlinux03|
+    jcwlinux03.vm.box = "ubuntu-16.04-amd64"
+    jcwlinux03.vm.hostname = "jcwlinux03.vm.local"
+    # prov
+    jcwlinux03.vm.provision "shell", path: "./bootfiles/ubuntuTidy.sh"
+
+    jcwlinux03.vm.network "private_network", ip: "192.168.40.221"
+
+  end
+
 
 # I don't want these VMs (yet) so commenting them out
 #   config.vm.define "puppet", primary: true do |puppet|
