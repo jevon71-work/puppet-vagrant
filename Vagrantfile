@@ -37,7 +37,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define "jcwlinux03", primary: true do |jcwlinux03|
-    jcwlinux03.vm.box = "ubuntu-16.04-amd64"
+    jcwlinux03.vm.box = "ubuntu-16-04-LTS-x64"
     jcwlinux03.vm.hostname = "jcwlinux03.vm.local"
     # prov
     jcwlinux03.vm.provision "shell", path: "./bootfiles/ubuntuTidy.sh"
