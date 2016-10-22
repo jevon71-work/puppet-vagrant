@@ -40,12 +40,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "jcwlinux03", primary: true do |jcwlinux03|
     jcwlinux03.vm.box = "ubuntu-16-04-LTS-x64"
     jcwlinux03.vm.hostname = "jcwlinux03.vm.local"
-    jcwlinux03.vm.memory = "3072"
     # prov
     jcwlinux03.vm.provision "shell", path: "./bootfiles/ubuntuTidy.sh"
     #jcwlinux03.vm.provision "shell", path: "./bootfiles/ubuntuMyBase.sh"
 
     jcwlinux03.vm.network "private_network", ip: "192.168.40.221"
+
+  end
+
+  config.vm.define "jcwlinux04", primary: true do |jcwlinux04|
+    jcwlinux04.vm.hostname = "jcwlinux04.vm.local"
+    # prov
+    jcwlinux04.vm.provision "shell", path: "./bootfiles/epel.sh"
+    jcwlinux04.vm.provision "shell", path: "./bootfiles/el7PuppetSetup.sh"
+
+    jcwlinux04.vm.network "private_network", ip: "192.168.40.231"
 
   end
 
