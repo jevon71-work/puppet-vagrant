@@ -53,6 +53,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # prov
     jcwlinux04.vm.provision "shell", path: "./bootfiles/epel.sh"
     jcwlinux04.vm.provision "shell", path: "./bootfiles/el7PuppetSetup.sh"
+    jcwlinux04.vm.provision "basepuppet", type: "puppet", run: "always" do |basepuppet|
+      basepuppet.environment = "testenv"
+      basepuppet.environment_path = "puppet/environments"
+    end
 
     jcwlinux04.vm.network "private_network", ip: "192.168.40.231"
 
