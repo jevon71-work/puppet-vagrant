@@ -5,3 +5,12 @@ file { '/tmp/testfile.txt':
   mode    => '0664',
   owner   => 'vagrant',
 }
+
+user { 'jevonw':
+  ensure => 'present',
+  gid    => '5001',
+  groups => ['wheel'],
+  home   => '/home/jevonw',
+  shell  => '/bin/bash',
+  uid    => '5001',
+}
