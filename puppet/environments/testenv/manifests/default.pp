@@ -1,3 +1,5 @@
+$packagelist = ['screen', 'python34', 'git']
+
 file { '/tmp/testfile.txt':
   ensure  => 'file',
   content => "The Matrix Has You\nFollow The White Rabbit\n",
@@ -8,9 +10,20 @@ file { '/tmp/testfile.txt':
 
 user { 'jevonw':
   ensure => 'present',
-  gid    => '5001',
   groups => ['wheel'],
   home   => '/home/jevonw',
   shell  => '/bin/bash',
   uid    => '5001',
+}
+
+Package {ensure => 'latest'}
+
+package {$packagelist:}
+
+file { '/home/jevonw/.ssh/id_rsa':
+  ensure  => 'present',
+  source  => 'puppet://id_rsa.erb',
+  owner   => 'jevonw',
+  mode    => '0400',
+  require => User ['jevonw'],
 }
