@@ -20,10 +20,22 @@ Package {ensure => 'latest'}
 
 package {$packagelist:}
 
-file { '/home/jevonw/.ssh/id_rsa':
-  ensure  => 'present',
-  source  => 'puppet://id_rsa.erb',
+file { '/home/jevonw':
+  ensure  => directory,
   owner   => 'jevonw',
-  mode    => '0400',
-  require => User ['jevonw'],
+  mode    => '0700',
+  require => User['jevonw'],
+}
+
+file { '/home/jevonw/.ssh':
+  ensure => directory,
+  owner  => 'jevonw',
+  mode   => '0700',
+}
+
+file { '/home/jevonw/.ssh/id_rsa':
+  ensure => 'present',
+  source => '/tmp/vagrant-puppet/environments/testenv/modules/id_rsa.erb',
+  owner  => 'jevonw',
+  mode   => '0400',
 }
