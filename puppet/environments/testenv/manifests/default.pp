@@ -71,6 +71,7 @@ staging::file { 'terraform_0.7.7_linux_amd64.zip':
 
 staging::extract { 'terraform_0.7.7_linux_amd64.zip':
   target  => '/opt/terraform/ver_0.7.7',
+  creates => '/opt/terraform/ver_0.7.7/terraform',
   require => Staging::File['terraform_0.7.7_linux_amd64.zip'],
 }
 
@@ -94,6 +95,7 @@ staging::file { 'terraform_0.6.16_linux_amd64.zip':
 
 staging::extract { 'terraform_0.6.16_linux_amd64.zip':
   target  => '/opt/terraform/ver_0.6.16',
+  creates => '/opt/terraform/ver_0.6.16/terraform',
   require => Staging::File['terraform_0.6.16_linux_amd64.zip'],
 }
 
