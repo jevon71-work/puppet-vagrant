@@ -1,4 +1,4 @@
-$packagelist = ['screen', 'python34', 'git', 'bash-completion', 'unzip']
+$packagelist = ['screen', 'python34', 'git', 'bash-completion', 'unzip', 'wget', 'tree']
 
 # mod ('puppet-staging', '2.0.1')
 # mod ('puppetlabs-accounts', '1.1.0')
