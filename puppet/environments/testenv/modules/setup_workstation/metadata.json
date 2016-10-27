@@ -1,0 +1,15 @@
+{
+  "name": "jevonw-setup_workstation",
+  "version": "0.1.0",
+  "author": "jevonw",
+  "summary": "This module is designed to assist in the setup of a virtual machine to run code against DHI Group Inc Systems.",
+  "license": "Apache-2.0",
+  "source": "https://github.com/DiceHoldingsInc/dhipuppet-vagrant-working.git",
+  "project_page": "https://github.com/DiceHoldingsInc/dhipuppet-vagrant-working",
+  "issues_url": "https://github.com/DiceHoldingsInc/dhipuppet-vagrant-working/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ],
+  "data_provider": null
+}
+

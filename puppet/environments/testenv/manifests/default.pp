@@ -42,6 +42,27 @@ file { '/etc/sudoers.d/jevonw':
   group   => 'root',
   mode    => '0440',
   owner   => 'root',
+  require => Accounts::User['jevonw'],
+}
+
+file { '/home/jevonw/.bash_profile':
+  ensure  => present,
+  require => Accounts::User['jevonw'],
+}
+
+file_line { 'extend_jevonw_path_to_include_Terraform':
+  path    => '/home/jevonw/.bash_profile',
+  line    => 'export PATH=/opt/terraform:$PATH',
+  require => [File['/home/jevonw/.bash_profile'], File['/opt/terraform/terraform']],
+}
+
+file { '/home/jevonw/.ssh/known_hosts':
+  ensure  => 'file',
+  source  => 'puppet:///modules/setup_workstation/known_hosts',
+  mode    => '0644',
+  owner   => 'jevonw',
+  group   => 'jevonw',
+  require => Accounts::User['jevonw'],
 }
 
 class { 'staging':
@@ -103,4 +124,13 @@ file { '/opt/terraform/terraform':
   ensure  => 'link',
   target  => '/opt/terraform/ver_0.6.16/terraform',
   require => Staging::Extract['terraform_0.6.16_linux_amd64.zip'],
+}
+
+vcsrepo { '/home/jevonw/awssaml':
+  ensure   => 'latest',
+  provider => 'git',
+  source   => 'git@github.com:DiceHoldingsInc/awssaml.git',
+  revision => 'master',
+  user     => 'jevonw',
+  require  => [Accounts::User['jevonw'], Package['git'], File['/home/jevonw/.ssh/known_hosts']],
 }
