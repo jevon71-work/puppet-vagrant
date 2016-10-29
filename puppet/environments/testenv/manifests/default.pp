@@ -1,5 +1,7 @@
-$packagelist = ['screen', 'python34', 'git', 'bash-completion', 'unzip', 'wget', 'tree']
-
+$packagelist = ['screen', 'python34', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'ansible']
+$workstation_username = 'jevonw'
+$workstation_user_fullname = 'Jevon White'
+$user_sshkeys = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDixR0VNYqZe1ShlNB1ShHBlYo0I8pPUjUZ+orfdlIrYadXnF2dbXaKqrMEZMW92L687vUZteRvxuzgxJXHxmjkI3ck+C3uqFaxPPjykUKYfBXKNuR1LGBOT9F0jpv/R0k271fizf51NQnb0EPYyWaX+oh004mSIpj0K5KJur8gyP2ABe6zKTQCljNaeAmxQCOasqnsMko/5JuSUQV4ooSPYs/kHe0XwNWt4aNlwwwbM5vz5VwKdK9Jyn8gMMUx2eKeBr+hImzVfTrhulkX45HSrdk+WrxE7gsvm1i/wFTEZ2kBiC1sC1jNBazr1T5+DTJQ9wth10EWSBOsy7N9oghNbO7Qrj7NJ9wUBJ57gqXU0aGHphshAhD9xur2CfCXG+dZcFRCVKSQuZJCKt+SA4CHLVILbsvfEU2MtSH571Cmx7m8V0UppRo4ZxH+1JbHfKiO54+x7sVAen9zkK5CwTlKoadOHHkGFKVwFtuZbTNSNFVciZ/bXqJ3opELqos5llZJGdyb9RWNWUbTtyqqr492L4AqcWofYeiKONylyQZILo26wHtw/n+ERfzKC9wswEKFeq7Pm7TNa/9X9tsVCbPVmjGXdpxWODrwrbV7KT/ZGFzuQ30x+NdDRAk3AjY98rJWchBGUoXLSjBLiWLMegs3IhcLR7s1GOFSPiQ43fxlQQ== jevon.white@dhigroupinc.com'
 # mod ('puppet-staging', '2.0.1')
 # mod ('puppetlabs-accounts', '1.1.0')
 # mod ('puppetlabs-stdlib', '4.13.1')
@@ -16,11 +18,11 @@ Package {ensure => 'latest'}
 
 package {$packagelist:}
 
-accounts::user {'jevonw':
+accounts::user {$workstation_username:
   uid     => '5001',
   gid     => '5001',
-  comment => 'Jevon White',
-  sshkeys => ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDixR0VNYqZe1ShlNB1ShHBlYo0I8pPUjUZ+orfdlIrYadXnF2dbXaKqrMEZMW92L687vUZteRvxuzgxJXHxmjkI3ck+C3uqFaxPPjykUKYfBXKNuR1LGBOT9F0jpv/R0k271fizf51NQnb0EPYyWaX+oh004mSIpj0K5KJur8gyP2ABe6zKTQCljNaeAmxQCOasqnsMko/5JuSUQV4ooSPYs/kHe0XwNWt4aNlwwwbM5vz5VwKdK9Jyn8gMMUx2eKeBr+hImzVfTrhulkX45HSrdk+WrxE7gsvm1i/wFTEZ2kBiC1sC1jNBazr1T5+DTJQ9wth10EWSBOsy7N9oghNbO7Qrj7NJ9wUBJ57gqXU0aGHphshAhD9xur2CfCXG+dZcFRCVKSQuZJCKt+SA4CHLVILbsvfEU2MtSH571Cmx7m8V0UppRo4ZxH+1JbHfKiO54+x7sVAen9zkK5CwTlKoadOHHkGFKVwFtuZbTNSNFVciZ/bXqJ3opELqos5llZJGdyb9RWNWUbTtyqqr492L4AqcWofYeiKONylyQZILo26wHtw/n+ERfzKC9wswEKFeq7Pm7TNa/9X9tsVCbPVmjGXdpxWODrwrbV7KT/ZGFzuQ30x+NdDRAk3AjY98rJWchBGUoXLSjBLiWLMegs3IhcLR7s1GOFSPiQ43fxlQQ== jevon.white@dhigroupinc.com'],
+  comment => $workstation_user_fullname,
+  sshkeys => [$user_sshkeys],
 }
 
 accounts::user {'puppet':
@@ -28,41 +30,41 @@ accounts::user {'puppet':
   gid => '501',
 }
 
-file { '/home/jevonw/.ssh/id_rsa':
+file { "/home/${workstation_username}/.ssh/id_rsa":
   ensure  => 'present',
   source  => '/tmp/vagrant-puppet/environments/testenv/modules/id_rsa.erb',
-  owner   => 'jevonw',
+  owner   => $workstation_username,
   mode    => '0400',
-  require => Accounts::User['jevonw'],
+  require => Accounts::User[$workstation_username],
 }
 
-file { '/etc/sudoers.d/jevonw':
+file { "/etc/sudoers.d/${workstation_username}":
   ensure  => 'file',
-  content => "Defaults:jevonw !requiretty\njevonw ALL=(ALL) NOPASSWD: ALL\n",
+  content => "Defaults:${workstation_username} !requiretty\n${workstation_username} ALL=(ALL) NOPASSWD: ALL\n",
   group   => 'root',
   mode    => '0440',
   owner   => 'root',
-  require => Accounts::User['jevonw'],
+  require => Accounts::User[$workstation_username],
 }
 
-file { '/home/jevonw/.bash_profile':
+file { "/home/${workstation_username}/.bash_profile":
   ensure  => present,
-  require => Accounts::User['jevonw'],
+  require => Accounts::User[$workstation_username],
 }
 
-file_line { 'extend_jevonw_path_to_include_Terraform':
-  path    => '/home/jevonw/.bash_profile',
+file_line { "extend_${workstation_username}_path_to_include_Terraform":
+  path    => "/home/${workstation_username}/.bash_profile",
   line    => 'export PATH=/opt/terraform:$PATH',
-  require => [File['/home/jevonw/.bash_profile'], File['/opt/terraform/terraform']],
+  require => [File["/home/${workstation_username}/.bash_profile"], File['/opt/terraform/terraform']],
 }
 
-file { '/home/jevonw/.ssh/known_hosts':
+file { "/home/${workstation_username}/.ssh/known_hosts":
   ensure  => 'file',
   source  => 'puppet:///modules/setup_workstation/known_hosts',
   mode    => '0644',
-  owner   => 'jevonw',
-  group   => 'jevonw',
-  require => Accounts::User['jevonw'],
+  owner   => $workstation_username,
+  group   => $workstation_username,
+  require => Accounts::User[$workstation_username],
 }
 
 class { 'staging':
@@ -120,17 +122,62 @@ staging::extract { 'terraform_0.6.16_linux_amd64.zip':
   require => Staging::File['terraform_0.6.16_linux_amd64.zip'],
 }
 
+staging::file { 'terragrunt_linux_amd64':
+  source  => 'https://github.com/gruntwork-io/terragrunt/releases/download/v0.1.3/terragrunt_linux_amd64',
+  require => Accounts::User['puppet'],
+}
+
 file { '/opt/terraform/terraform':
   ensure  => 'link',
   target  => '/opt/terraform/ver_0.6.16/terraform',
   require => Staging::Extract['terraform_0.6.16_linux_amd64.zip'],
 }
 
-vcsrepo { '/home/jevonw/awssaml':
+vcsrepo { "/home/${workstation_username}/awssaml":
   ensure   => 'latest',
   provider => 'git',
   source   => 'git@github.com:DiceHoldingsInc/awssaml.git',
   revision => 'master',
-  user     => 'jevonw',
-  require  => [Accounts::User['jevonw'], Package['git'], File['/home/jevonw/.ssh/known_hosts']],
+  user     => $workstation_username,
+  require  => [Accounts::User[$workstation_username], Package['git'], File["/home/${workstation_username}/.ssh/known_hosts"]],
+}
+
+include pip
+
+pip::install { 'awscli':
+  python_version => '3.4',
+}
+
+file { "/home/${workstation_username}/.aws":
+  ensure  => 'directory',
+  owner   => $workstation_username,
+  group   => $workstation_username,
+  mode    => '0775',
+  require => Accounts::User[$workstation_username],
+}
+
+file { "/home/${workstation_username}/.aws/config":
+  ensure  => 'file',
+  owner   => $workstation_username,
+  group   => $workstation_username,
+  mode    => '0664',
+  content => "[default]\nregion = us-east-1\noutput = json\n\n",
+}
+
+file { "/home/${workstation_username}/.aws/credentials":
+  ensure  => 'file',
+  owner   => $workstation_username,
+  group   => $workstation_username,
+  mode    => '0664',
+  content => "[default]\naws_secret_access_key = Default\naws_secret_key_id = Default\n\n",
+}
+# exec { 'check_awssaml_presence':
+#   command => '/bin/false',
+#   unless  => 'usr/bin/test -e /usr/bin/awssaml',
+# }
+#
+pip::install { 'awssaml':
+  package        => "/home/${workstation_username}/awssaml/.",
+  python_version => '3.4',
+  require        => [Pip::Install['awscli'], Vcsrepo["/home/${workstation_username}/awssaml"]],
 }
