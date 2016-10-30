@@ -56,6 +56,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     jcwlinux04.vm.provision "basepuppet", type: "puppet", run: "always" do |basepuppet|
       basepuppet.environment = "testenv"
       basepuppet.environment_path = "puppet/environments"
+      basepuppet.hiera_config_path = "puppet/hiera.yaml"
     end
 
     jcwlinux04.vm.network "private_network", ip: "192.168.40.231"

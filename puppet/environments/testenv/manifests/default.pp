@@ -1,7 +1,7 @@
 $packagelist = ['screen', 'python34', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'ansible']
-$workstation_username = 'jevonw'
-$workstation_user_fullname = 'Jevon White'
-$user_sshkeys = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDixR0VNYqZe1ShlNB1ShHBlYo0I8pPUjUZ+orfdlIrYadXnF2dbXaKqrMEZMW92L687vUZteRvxuzgxJXHxmjkI3ck+C3uqFaxPPjykUKYfBXKNuR1LGBOT9F0jpv/R0k271fizf51NQnb0EPYyWaX+oh004mSIpj0K5KJur8gyP2ABe6zKTQCljNaeAmxQCOasqnsMko/5JuSUQV4ooSPYs/kHe0XwNWt4aNlwwwbM5vz5VwKdK9Jyn8gMMUx2eKeBr+hImzVfTrhulkX45HSrdk+WrxE7gsvm1i/wFTEZ2kBiC1sC1jNBazr1T5+DTJQ9wth10EWSBOsy7N9oghNbO7Qrj7NJ9wUBJ57gqXU0aGHphshAhD9xur2CfCXG+dZcFRCVKSQuZJCKt+SA4CHLVILbsvfEU2MtSH571Cmx7m8V0UppRo4ZxH+1JbHfKiO54+x7sVAen9zkK5CwTlKoadOHHkGFKVwFtuZbTNSNFVciZ/bXqJ3opELqos5llZJGdyb9RWNWUbTtyqqr492L4AqcWofYeiKONylyQZILo26wHtw/n+ERfzKC9wswEKFeq7Pm7TNa/9X9tsVCbPVmjGXdpxWODrwrbV7KT/ZGFzuQ30x+NdDRAk3AjY98rJWchBGUoXLSjBLiWLMegs3IhcLR7s1GOFSPiQ43fxlQQ== jevon.white@dhigroupinc.com'
+$workstation_username = pick(hiera('setup_workstation::username'), 'dummy')
+$workstation_user_fullname = pick(hiera('setup_workstation::user_fullname'), 'You have not specified your common.yaml')
+$user_sshkeys = pick(hiera('setup_workstation::user_sshkeys'), 'ssh-rsa This will never work')
 # mod ('puppet-staging', '2.0.1')
 # mod ('puppetlabs-accounts', '1.1.0')
 # mod ('puppetlabs-stdlib', '4.13.1')
