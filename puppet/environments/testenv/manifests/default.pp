@@ -1,7 +1,9 @@
 $packagelist = ['screen', 'python34', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'ansible']
-$workstation_username = pick(hiera('setup_workstation::username'), 'dummy')
-$workstation_user_fullname = pick(hiera('setup_workstation::user_fullname'), 'You have not specified your common.yaml')
-$user_sshkeys = pick(hiera('setup_workstation::user_sshkeys'), 'ssh-rsa This will never work')
+$setup_workstation_username = hiera('setup_workstation_username', 'dummy')
+$setup_workstation_user_fullname = hiera('setup_workstation_user_fullname', 'You have not specified your common.yaml')
+$setup_workstation_user_sshkeys = hiera('setup_workstation_user_sshkeys', 'ssh-rsa This will never work')
+
+# $_setup_workstation_name = pick
 # mod ('puppet-staging', '2.0.1')
 # mod ('puppetlabs-accounts', '1.1.0')
 # mod ('puppetlabs-stdlib', '4.13.1')
@@ -18,11 +20,11 @@ Package {ensure => 'latest'}
 
 package {$packagelist:}
 
-accounts::user {$workstation_username:
+accounts::user {$setup_workstation_username:
   uid     => '5001',
   gid     => '5001',
-  comment => $workstation_user_fullname,
-  sshkeys => [$user_sshkeys],
+  comment => $setup_workstation_user_fullname,
+  sshkeys => [$setup_workstation_user_sshkeys],
 }
 
 accounts::user {'puppet':
@@ -30,41 +32,41 @@ accounts::user {'puppet':
   gid => '501',
 }
 
-file { "/home/${workstation_username}/.ssh/id_rsa":
+file { "/home/${setup_workstation_username}/.ssh/id_rsa":
   ensure  => 'present',
   source  => '/tmp/vagrant-puppet/environments/testenv/modules/id_rsa.erb',
-  owner   => $workstation_username,
+  owner   => $setup_workstation_username,
   mode    => '0400',
-  require => Accounts::User[$workstation_username],
+  require => Accounts::User[$setup_workstation_username],
 }
 
-file { "/etc/sudoers.d/${workstation_username}":
+file { "/etc/sudoers.d/${setup_workstation_username}":
   ensure  => 'file',
-  content => "Defaults:${workstation_username} !requiretty\n${workstation_username} ALL=(ALL) NOPASSWD: ALL\n",
+  content => "Defaults:${setup_workstation_username} !requiretty\n${setup_workstation_username} ALL=(ALL) NOPASSWD: ALL\n",
   group   => 'root',
   mode    => '0440',
   owner   => 'root',
-  require => Accounts::User[$workstation_username],
+  require => Accounts::User[$setup_workstation_username],
 }
 
-file { "/home/${workstation_username}/.bash_profile":
+file { "/home/${setup_workstation_username}/.bash_profile":
   ensure  => present,
-  require => Accounts::User[$workstation_username],
+  require => Accounts::User[$setup_workstation_username],
 }
 
-file_line { "extend_${workstation_username}_path_to_include_Terraform":
-  path    => "/home/${workstation_username}/.bash_profile",
+file_line { "extend_${setup_workstation_username}_path_to_include_Terraform":
+  path    => "/home/${setup_workstation_username}/.bash_profile",
   line    => 'export PATH=/opt/terraform:$PATH',
-  require => [File["/home/${workstation_username}/.bash_profile"], File['/opt/terraform/terraform']],
+  require => [File["/home/${setup_workstation_username}/.bash_profile"], File['/opt/terraform/terraform']],
 }
 
-file { "/home/${workstation_username}/.ssh/known_hosts":
+file { "/home/${setup_workstation_username}/.ssh/known_hosts":
   ensure  => 'file',
   source  => 'puppet:///modules/setup_workstation/known_hosts',
   mode    => '0644',
-  owner   => $workstation_username,
-  group   => $workstation_username,
-  require => Accounts::User[$workstation_username],
+  owner   => $setup_workstation_username,
+  group   => $setup_workstation_username,
+  require => Accounts::User[$setup_workstation_username],
 }
 
 class { 'staging':
@@ -133,13 +135,13 @@ file { '/opt/terraform/terraform':
   require => Staging::Extract['terraform_0.6.16_linux_amd64.zip'],
 }
 
-vcsrepo { "/home/${workstation_username}/awssaml":
+vcsrepo { "/home/${setup_workstation_username}/awssaml":
   ensure   => 'latest',
   provider => 'git',
   source   => 'git@github.com:DiceHoldingsInc/awssaml.git',
   revision => 'master',
-  user     => $workstation_username,
-  require  => [Accounts::User[$workstation_username], Package['git'], File["/home/${workstation_username}/.ssh/known_hosts"]],
+  user     => $setup_workstation_username,
+  require  => [Accounts::User[$setup_workstation_username], Package['git'], File["/home/${setup_workstation_username}/.ssh/known_hosts"]],
 }
 
 include pip
@@ -148,26 +150,26 @@ pip::install { 'awscli':
   python_version => '3.4',
 }
 
-file { "/home/${workstation_username}/.aws":
+file { "/home/${setup_workstation_username}/.aws":
   ensure  => 'directory',
-  owner   => $workstation_username,
-  group   => $workstation_username,
+  owner   => $setup_workstation_username,
+  group   => $setup_workstation_username,
   mode    => '0775',
-  require => Accounts::User[$workstation_username],
+  require => Accounts::User[$setup_workstation_username],
 }
 
-file { "/home/${workstation_username}/.aws/config":
+file { "/home/${setup_workstation_username}/.aws/config":
   ensure  => 'file',
-  owner   => $workstation_username,
-  group   => $workstation_username,
+  owner   => $setup_workstation_username,
+  group   => $setup_workstation_username,
   mode    => '0664',
   content => "[default]\nregion = us-east-1\noutput = json\n\n",
 }
 
-file { "/home/${workstation_username}/.aws/credentials":
+file { "/home/${setup_workstation_username}/.aws/credentials":
   ensure  => 'file',
-  owner   => $workstation_username,
-  group   => $workstation_username,
+  owner   => $setup_workstation_username,
+  group   => $setup_workstation_username,
   mode    => '0664',
   content => "[default]\naws_secret_access_key = Default\naws_secret_key_id = Default\n\n",
 }
@@ -177,7 +179,7 @@ file { "/home/${workstation_username}/.aws/credentials":
 # }
 #
 pip::install { 'awssaml':
-  package        => "/home/${workstation_username}/awssaml/.",
+  package        => "/home/${setup_workstation_username}/awssaml/.",
   python_version => '3.4',
-  require        => [Pip::Install['awscli'], Vcsrepo["/home/${workstation_username}/awssaml"]],
+  require        => [Pip::Install['awscli'], Vcsrepo["/home/${setup_workstation_username}/awssaml"]],
 }
