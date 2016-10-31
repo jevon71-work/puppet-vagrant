@@ -16,52 +16,42 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "centos7"
   # unless i say so
 
-  config.vm.define "jcwlinux01", primary: true do |jcwlinux01|
-    jcwlinux01.vm.hostname = "jcwlinux01.vm.local"
+  config.vm.define "dhi-vglinux01", primary: true do |dhi-vglinux01|
+    dhi-vglinux01.vm.hostname = "dhi-vglinux01.vm.local"
     # prov
-    jcwlinux01.vm.provision "shell", path: "./bootfiles/epel.sh"
-    jcwlinux01.vm.provision "shell", path: "./bootfiles/el7PuppetSetup.sh"
-
-    jcwlinux01.vm.network "private_network", ip: "192.168.40.201"
-
-  end
-
-  config.vm.define "jcwlinux02", primary: true do |jcwlinux02|
-    jcwlinux02.vm.box = "ubuntu-14-04-LTS-x64"
-    jcwlinux02.vm.hostname = "jcwlinux02.vm.local"
-    # prov
-    jcwlinux02.vm.provision "shell", path: "./bootfiles/ubuntuTidy.sh"
-    jcwlinux02.vm.provision "shell", path: "./bootfiles/ubuntuMyBase.sh"
-
-    jcwlinux02.vm.network "private_network", ip: "192.168.40.211"
-
-  end
-
-  config.vm.define "jcwlinux03", primary: true do |jcwlinux03|
-    jcwlinux03.vm.box = "ubuntu-16-04-LTS-x64"
-    jcwlinux03.vm.hostname = "jcwlinux03.vm.local"
-    # prov
-    jcwlinux03.vm.provision "shell", path: "./bootfiles/ubuntuTidy.sh"
-    #jcwlinux03.vm.provision "shell", path: "./bootfiles/ubuntuMyBase.sh"
-
-    jcwlinux03.vm.network "private_network", ip: "192.168.40.221"
-
-  end
-
-  config.vm.define "jcwlinux04", primary: true do |jcwlinux04|
-    jcwlinux04.vm.hostname = "jcwlinux04.vm.local"
-    # prov
-    jcwlinux04.vm.provision "shell", path: "./bootfiles/epel.sh"
-    jcwlinux04.vm.provision "shell", path: "./bootfiles/el7PuppetSetup.sh"
-    jcwlinux04.vm.provision "basepuppet", type: "puppet", run: "always" do |basepuppet|
+    dhi-vglinux01.vm.provision "shell", path: "./bootfiles/epel.sh"
+    dhi-vglinux01.vm.provision "shell", path: "./bootfiles/el7PuppetSetup.sh"
+    dhi-vglinux01.vm.provision "basepuppet", type: "puppet", run: "always" do |basepuppet|
       basepuppet.environment = "testenv"
       basepuppet.environment_path = "puppet/environments"
       basepuppet.hiera_config_path = "puppet/hiera.yaml"
     end
 
-    jcwlinux04.vm.network "private_network", ip: "192.168.40.231"
+    dhi-vglinux01.vm.network "private_network", ip: "192.168.40.201"
 
   end
+
+  config.vm.define "dhi-vglinux02", primary: true do |dhi-vglinux02|
+    dhi-vglinux02.vm.box = "ubuntu-14-04-LTS-x64"
+    dhi-vglinux02.vm.hostname = "dhi-vglinux02.vm.local"
+    # prov
+    dhi-vglinux02.vm.provision "shell", path: "./bootfiles/ubuntuTidy.sh"
+    dhi-vglinux02.vm.provision "shell", path: "./bootfiles/ubuntuMyBase.sh"
+
+    dhi-vglinux02.vm.network "private_network", ip: "192.168.40.211"
+
+  end
+
+  # config.vm.define "dhi-vglinux03", primary: true do |dhi-vglinux03|
+  #   dhi-vglinux03.vm.box = "ubuntu-16-04-LTS-x64"
+  #   dhi-vglinux03.vm.hostname = "dhi-vglinux03.vm.local"
+    # prov
+    # dhi-vglinux03.vm.provision "shell", path: "./bootfiles/ubuntuTidy.sh"
+    #dhi-vglinux03.vm.provision "shell", path: "./bootfiles/ubuntuMyBase.sh"
+
+  #   dhi-vglinux03.vm.network "private_network", ip: "192.168.40.221"
+  #
+  # end
 
 
 # I don't want these VMs (yet) so commenting them out
