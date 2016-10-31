@@ -2,11 +2,11 @@
 
 ## Description
 
-This repository contains a Vagrantfile and some Serverspec to spin up a Linux-
-based environment so that I can work.  I will focus on using CentOS as my main
-system of choice, but will also have a Ubuntu box or two for testing purposes.
-I have started the repository by basing it on the code provided to create the
-Learning Puppet 4 book published by O'Reilly.
+This repository contains a Vagrantfile, some Puppet and some Serverspec to spin
+up a Linux-based environment so that I can work.  I will focus on using CentOS
+as my main system of choice, but will also have a Ubuntu box or two for testing
+purposes.  I have started the repository by basing it on the code provided to
+create the Learning Puppet 4 book published by O'Reilly.
 
 ## Objectives
 
@@ -16,10 +16,11 @@ will have everything I need to do my work:
 1.  Puppet 4 Agent installed
 2.  Terraform version 0.6.x (latest version)
 3.  Terraform version 0.7.x (latest "non-buggy" version)
-4.  Python 3 / PIP 3 - required for ssaml stuff created by Jeremy Witte
+4.  Python 3 / PIP 3 - required for awssaml stuff created by Jeremy Witte
 5.  Git, so I can push / pull repos locally from GitHub / BitBucket
 6.  Serverspec, so I can test the effects of my code changes
 7.  TestKitchen, additional testing platform
+8.  Ansible, because for some reason, some people seem to like it
 
 I will be expanding my requirements as I go - I would like to have a CI server
 as part of this environment, so I don't need to always manually run tests.
@@ -33,6 +34,8 @@ DHI Group Inc.
 - [x] vagrant
 
 - [x] ruby, rubygems, puppet
+
+- [x] SSH key-pair available which allows you to pull code from GitHub
 
 
 ## Tools needed
@@ -81,13 +84,26 @@ jcwlinux02
 ## Usage summary
 
 ### On host
-* $editor Vagrantfile - define your server "specs". RAM, IP, vagrant box etc
+
+* Pull the code from GitHub
+
+* $editor ./Vagrantfile - define your server "specs". RAM, IP, vagrant box etc
+
+* $editor ./puppet/environments/testenv/modules/id_rsa.erb - populate with your private key
+
+* $editor ./puppet/hiera/common.yaml - define your username, comment and ssh public key as hiera variables:
+````bash
+---
+setup_workstation_username:      'jevonw'
+setup_workstation_user_fullname: 'Jevon White'
+setup_workstation_user_sshkeys:  'ssh-rsa PublicKey'
+````
 
 * `vagrant up` to bring up all boxes
 
 * `vagrant hostmanager` # automajic for /etc/hosts
 
-* `vagrant ssh jcwlinux01` # log into this box. do your puppet foo
+* `vagrant ssh jcwlinux01` # log into this box. do your work - if you require SAML tokens, run `awssaml`.
 
 ## Serverspec testing
 
@@ -146,3 +162,15 @@ rake testing:zoo03   # Run testing to zoo03.vm.local
 This is forked from jayeola/puppet-vagrant, but has code from jayeola/LAXPT and jorhett/learning-puppet4.
 
 I will also steal code from wherever seems appropriate...
+
+## ToDo
+
+- [x] Turn the Puppet code in default.pp into a proper class.
+
+- [x] Get the setups on Ubuntu 14 and 16.
+
+- [x] Build a full CI system.
+
+- [x] Improve my tests.
+
+- [x] Tidy up this ReadMe.

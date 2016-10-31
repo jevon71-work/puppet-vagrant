@@ -1,12 +1,12 @@
-$packagelist = ['screen', 'python34', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'ansible']
+$base_packagelist = ['screen', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'telnet', 'traceroute']
+$os_spec_packagelist = $facts['osfamily'] ? {
+  'redhat' => ['python34', 'ansible', 'bind-utils'],
+  'debian' => ['dnsutils'],
+  default  => ['WhatWereYouThinking?ThisCannotRunOnThisOS'],
+}
 $setup_workstation_username = hiera('setup_workstation_username', 'dummy')
 $setup_workstation_user_fullname = hiera('setup_workstation_user_fullname', 'You have not specified your common.yaml')
 $setup_workstation_user_sshkeys = hiera('setup_workstation_user_sshkeys', 'ssh-rsa This will never work')
-
-# $_setup_workstation_name = pick
-# mod ('puppet-staging', '2.0.1')
-# mod ('puppetlabs-accounts', '1.1.0')
-# mod ('puppetlabs-stdlib', '4.13.1')
 
 file { '/tmp/testfile.txt':
   ensure  => 'file',
@@ -18,7 +18,9 @@ file { '/tmp/testfile.txt':
 
 Package {ensure => 'latest'}
 
-package {$packagelist:}
+package {$base_packagelist:}
+
+package {$os_spec_packagelist:}
 
 accounts::user {$setup_workstation_username:
   uid     => '5001',
