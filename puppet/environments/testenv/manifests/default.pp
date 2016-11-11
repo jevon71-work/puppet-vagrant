@@ -1,4 +1,4 @@
-$base_packagelist = ['vim', 'screen', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'telnet', 'traceroute', 'lsof']
+$base_packagelist = ['vim', 'screen', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'telnet', 'traceroute', 'lsof', 'nmap']
 $os_spec_packagelist = $facts['osfamily'] ? {
   'redhat' => ['python34', 'ansible', 'bind-utils'],
   'debian' => ['dnsutils'],
