@@ -1,4 +1,4 @@
-$base_packagelist = ['screen', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'telnet', 'traceroute', 'lsof']
+$base_packagelist = ['vim', 'screen', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'telnet', 'traceroute', 'lsof']
 $os_spec_packagelist = $facts['osfamily'] ? {
   'redhat' => ['python34', 'ansible', 'bind-utils'],
   'debian' => ['dnsutils'],
@@ -56,10 +56,10 @@ file { "/home/${setup_workstation_username}/.bash_profile":
   require => Accounts::User[$setup_workstation_username],
 }
 
-file_line { "extend_${setup_workstation_username}_path_to_include_Terraform":
+file_line { "extend_${setup_workstation_username}_path_to_include_Terraform_and_Terragrunt":
   path    => "/home/${setup_workstation_username}/.bash_profile",
-  line    => 'export PATH=/opt/terraform:$PATH',
-  require => [File["/home/${setup_workstation_username}/.bash_profile"], File['/opt/terraform/terraform']],
+  line    => 'export PATH=/opt/terraform:/opt/terragrunt:$PATH',
+  require => [File["/home/${setup_workstation_username}/.bash_profile"], File['/opt/terraform/terraform'], File['/opt/terragrunt/terragrunt']],
 }
 
 file { "/home/${setup_workstation_username}/.ssh/known_hosts":
@@ -126,15 +126,38 @@ staging::extract { 'terraform_0.6.16_linux_amd64.zip':
   require => Staging::File['terraform_0.6.16_linux_amd64.zip'],
 }
 
+file { '/opt/terraform/terraform':
+  ensure  => 'link',
+  target  => '/opt/terraform/ver_0.6.16/terraform',
+  require => Staging::Extract['terraform_0.6.16_linux_amd64.zip'],
+}
+
 staging::file { 'terragrunt_linux_amd64':
   source  => 'https://github.com/gruntwork-io/terragrunt/releases/download/v0.1.3/terragrunt_linux_amd64',
   require => Accounts::User['puppet'],
 }
 
-file { '/opt/terraform/terraform':
-  ensure  => 'link',
-  target  => '/opt/terraform/ver_0.6.16/terraform',
-  require => Staging::Extract['terraform_0.6.16_linux_amd64.zip'],
+file { '/opt/terragrunt':
+  ensure => directory,
+  mode   => '0755',
+}
+
+file { '/opt/terragrunt/ver_0.1.3':
+  ensure => directory,
+  mode   => '0755',
+}
+
+file { '/opt/terragrunt/ver_0.1.3/terragrunt':
+  ensure  => file,
+  source  => '/var/staging/terragrunt_linux_amd64',
+  mode    => '0755',
+  require => Staging::File['terragrunt_linux_amd64'],
+}
+
+file { '/opt/terragrunt/terragrunt':
+  ensure  => link,
+  target  => '/opt/terragrunt/ver_0.1.3/terragrunt',
+  require => File['/opt/terragrunt/ver_0.1.3/terragrunt'],
 }
 
 vcsrepo { "/home/${setup_workstation_username}/awssaml":
