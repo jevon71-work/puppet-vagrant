@@ -16,6 +16,6 @@ file { "/home/${setup_workstation_username}/.bash_profile":
 
 file_line { "add_Terragrunt_alias_to_${setup_workstation_username}":
   path    => "/home/${setup_workstation_username}/.bash_profile",
-  line    => 'alias efcterragrunt=\'AWS_PROFILE=efcprodaws terragrunt\'',
+  line    => 'alias etg=\'AWS_PROFILE=efcprodaws terragrunt\'',
   require => File["/home/${setup_workstation_username}/.bash_profile"],
 }
