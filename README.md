@@ -174,3 +174,7 @@ I will also steal code from wherever seems appropriate...
 - [x] Improve my tests.
 
 - [x] Tidy up this ReadMe.
+
+## Version History
+
+* 0.1.0  -  First public version
