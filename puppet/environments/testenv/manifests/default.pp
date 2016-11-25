@@ -4,6 +4,7 @@ $os_spec_packagelist = $facts['osfamily'] ? {
   'debian' => ['dnsutils'],
   default  => ['WhatWereYouThinking?ThisCannotRunOnThisOS'],
 }
+$gem_packagelist = ['bundler', 'r10k']
 $setup_workstation_username = hiera('setup_workstation_username', 'dummy')
 $setup_workstation_user_fullname = hiera('setup_workstation_user_fullname', 'You have not specified your common.yaml')
 $setup_workstation_user_sshkeys = hiera('setup_workstation_user_sshkeys', 'ssh-rsa This will never work')
@@ -21,6 +22,10 @@ Package {ensure => 'latest'}
 package {$base_packagelist:}
 
 package {$os_spec_packagelist:}
+
+package { $gem_packagelist:
+  provider => gem,
+}
 
 accounts::user {$setup_workstation_username:
   uid     => '5001',
