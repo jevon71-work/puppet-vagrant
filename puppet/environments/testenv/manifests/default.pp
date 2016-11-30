@@ -4,7 +4,7 @@ $os_spec_packagelist = $facts['osfamily'] ? {
   'debian' => ['dnsutils'],
   default  => ['WhatWereYouThinking?ThisCannotRunOnThisOS'],
 }
-$gem_packagelist = ['bundler', 'r10k']
+$gem_packagelist = ['bundler', 'r10k', 'test-kitchen', 'kitchen-puppet']
 $setup_workstation_username = hiera('setup_workstation_username', 'dummy')
 $setup_workstation_user_fullname = hiera('setup_workstation_user_fullname', 'You have not specified your common.yaml')
 $setup_workstation_user_sshkeys = hiera('setup_workstation_user_sshkeys', 'ssh-rsa This will never work')

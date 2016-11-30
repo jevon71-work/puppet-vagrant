@@ -63,7 +63,7 @@ ruby 2.2.4p230 (2015-12-16 revision 53155) [x64-mingw32]
 
 
 
-### Ruby gems - install me!!
+### Ruby gems - install me (e.g. gem install bundler puppet-lint rake)!!
 ````bash
 gem list | awk '/puppet |bundler|rake/'
 bundler (1.12.5)
