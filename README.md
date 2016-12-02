@@ -29,6 +29,8 @@ DHI Group Inc.
 
 ## Assumptions
 
+- [x] packer, to use local vagrant boxes instead of pulling down from Tinternet
+
 - [x] virtualbox
 
 - [x] vagrant
