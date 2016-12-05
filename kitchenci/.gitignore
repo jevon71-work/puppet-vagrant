@@ -1,0 +1,18 @@
+.kitchen/
+.kitchen.local.yml
+__.kitchen.local.yml
+.tmp/
+.librarian
+.bundle/
+.rspec_system/
+spec/*
+pkg/
+modules/
+__utilities/
+test/reports/*
+Gemfile.lock
+Puppetfile.lock
+chefignore
+
+# Temporary file
+Dockerfile*

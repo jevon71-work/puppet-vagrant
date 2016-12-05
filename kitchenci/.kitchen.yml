@@ -1,0 +1,17 @@
+---
+driver:
+  name: docker
+
+provisioner:
+  name: puppet_apply
+  # puppet_version: 3.8.1
+  mainfests_path: manifests
+  modules_path: modules
+
+platforms:
+  - name: ubuntu-14.04
+  - name: centos-7.2
+
+suites:
+  - name: default
+    manifest: site.pp

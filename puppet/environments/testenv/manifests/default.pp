@@ -213,3 +213,44 @@ pip::install { 'awssaml':
   python_version => '3.4',
   require        => [Pip::Install['awscli'], Vcsrepo["/home/${setup_workstation_username}/awssaml"]],
 }
+
+if $facts['osfamily'] == 'redhat' {
+  yumrepo { 'dockerrepo':
+    descr    => 'Docker Repository',
+    enabled  => 1,
+    baseurl  => 'https://yum.dockerproject.org/repo/main/centos/7/',
+    gpgcheck => 1,
+    gpgkey   => 'https://yum.dockerproject.org/gpg',
+  }
+  package { 'docker-engine':
+    ensure  => latest,
+    notify  => Service['docker'],
+    require => Yumrepo['dockerrepo'],
+  }
+  service { 'docker':
+    ensure     => running,
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
+    require    => Package['docker-engine'],
+    # pattern => 'docker-engine',
+  }
+  # staging::file { 'vagrant_1.9.0_x86_64.rpm':
+  #   source  => 'https://releases.hashicorp.com/vagrant/1.9.0/vagrant_1.9.0_x86_64.rpm',
+  #   require => Accounts::User['puppet'],
+  # }
+  wget::fetch { 'vagrant_1.9.0':
+    source      => 'https://releases.hashicorp.com/vagrant/1.9.0/vagrant_1.9.0_x86_64.rpm',
+    destination => '/tmp/',
+    cache_dir   => '/var/staging',
+    timeout     => 0,
+    verbose     => false,
+    source_hash => '9bb8713bca36eb1f3e85d1d9bbaf6d3b',
+  }
+  package { 'vagrant':
+    ensure   => installed,
+    provider => rpm,
+    source   => '/tmp/vagrant_1.9.0_x86_64.rpm',
+    require  => Wget::Fetch['vagrant_1.9.0'],
+  }
+}
