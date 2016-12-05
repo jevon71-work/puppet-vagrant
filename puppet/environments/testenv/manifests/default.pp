@@ -245,7 +245,7 @@ if $facts['osfamily'] == 'redhat' {
     cache_dir   => '/var/staging',
     timeout     => 0,
     verbose     => false,
-    source_hash => '9bb8713bca36eb1f3e85d1d9bbaf6d3b',
+    # source_hash => '{md5}9bb8713bca36eb1f3e85d1d9bbaf6d3b',
   }
   package { 'vagrant':
     ensure   => installed,
