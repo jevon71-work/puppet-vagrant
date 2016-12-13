@@ -1,4 +1,4 @@
-$base_packagelist = ['vim', 'screen', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'telnet', 'traceroute', 'lsof', 'nmap', 'rake']
+$base_packagelist = ['vim', 'screen', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'telnet', 'traceroute', 'lsof', 'nmap', 'rake', 'ruby-devel']
 $os_spec_packagelist = $facts['osfamily'] ? {
   'redhat' => ['python34', 'ansible', 'bind-utils'],
   'debian' => ['dnsutils'],
@@ -65,6 +65,12 @@ file_line { "extend_${setup_workstation_username}_path_to_include_Terraform_and_
   path    => "/home/${setup_workstation_username}/.bash_profile",
   line    => 'export PATH=/opt/terraform:/opt/terragrunt:$PATH',
   require => [File["/home/${setup_workstation_username}/.bash_profile"], File['/opt/terraform/terraform'], File['/opt/terragrunt/terragrunt']],
+}
+
+file_line { 'allow_ipv4_forwarding':
+  path   => '/etc/sysctl.conf',
+  line   => 'net.ipv4.ip_forward = 1',
+  notify => Service['docker'],
 }
 
 file { "/home/${setup_workstation_username}/.ssh/known_hosts":
@@ -245,7 +251,7 @@ if $facts['osfamily'] == 'redhat' {
     cache_dir   => '/var/staging',
     timeout     => 0,
     verbose     => false,
-    # source_hash => '{md5}9bb8713bca36eb1f3e85d1d9bbaf6d3b',
+    source_hash => '9bb8713bca36eb1f3e85d1d9bbaf6d3b',
   }
   package { 'vagrant':
     ensure   => installed,
