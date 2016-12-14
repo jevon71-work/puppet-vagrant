@@ -95,28 +95,28 @@ file { '/opt/terraform':
   mode   => '0755',
 }
 
-file { '/opt/terraform/ver_0.7.7':
+file { '/opt/terraform/ver_0.7.13':
   ensure => 'directory',
   owner  => 'root',
   group  => 'root',
   mode   => '0755',
 }
 
-staging::file { 'terraform_0.7.7_linux_amd64.zip':
-  source  => 'https://releases.hashicorp.com/terraform/0.7.7/terraform_0.7.7_linux_amd64.zip',
-  require => [Accounts::User['puppet'], File['/opt/terraform/ver_0.7.7']],
+staging::file { 'terraform_0.7.13_linux_amd64.zip':
+  source  => 'https://releases.hashicorp.com/terraform/0.7.13/terraform_0.7.13_linux_amd64.zip',
+  require => [Accounts::User['puppet'], File['/opt/terraform/ver_0.7.13']],
 }
 
-staging::extract { 'terraform_0.7.7_linux_amd64.zip':
-  target  => '/opt/terraform/ver_0.7.7',
-  creates => '/opt/terraform/ver_0.7.7/terraform',
-  require => Staging::File['terraform_0.7.7_linux_amd64.zip'],
+staging::extract { 'terraform_0.7.13_linux_amd64.zip':
+  target  => '/opt/terraform/ver_0.7.13',
+  creates => '/opt/terraform/ver_0.7.13/terraform',
+  require => Staging::File['terraform_0.7.13_linux_amd64.zip'],
 }
 
 file { '/opt/terraform/terraform-new':
   ensure  => 'link',
-  target  => '/opt/terraform/ver_0.7.7/terraform',
-  require => Staging::Extract['terraform_0.7.7_linux_amd64.zip'],
+  target  => '/opt/terraform/ver_0.7.13/terraform',
+  require => Staging::Extract['terraform_0.7.13_linux_amd64.zip'],
 }
 
 file { '/opt/terraform/ver_0.6.16':

@@ -10,7 +10,7 @@ file { '/opt/terraform':
   mode   => '0755',
 }
 
-file { '/opt/terraform/ver_0.7.7':
+file { '/opt/terraform/ver_0.7.13':
   ensure => 'directory',
   owner  => 'root',
   group  => 'root',
@@ -19,14 +19,14 @@ file { '/opt/terraform/ver_0.7.7':
 
 file { '/opt/terraform/terraform-new':
   ensure => 'link',
-  target => '/opt/terraform/ver_0.7.7/terraform',
-  # require => Staging::Extract['terraform_0.7.7_linux_amd64.zip'],
+  target => '/opt/terraform/ver_0.7.13/terraform',
+  # require => Staging::Extract['terraform_0.7.13_linux_amd64.zip'],
 }
 
 file { '/opt/terraform/terraform':
   ensure => 'link',
-  target => '/opt/terraform/ver_0.7.7/terraform',
-  # require => Staging::Extract['terraform_0.7.7_linux_amd64.zip'],
+  target => '/opt/terraform/ver_0.7.13/terraform',
+  # require => Staging::Extract['terraform_0.7.13_linux_amd64.zip'],
 }
 
 file { '/opt/terraform/ver_0.6.16':
