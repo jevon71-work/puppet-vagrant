@@ -1,6 +1,6 @@
 $base_packagelist = ['vim', 'screen', 'git', 'bash-completion', 'unzip', 'wget', 'tree', 'telnet', 'traceroute', 'lsof', 'nmap', 'rake', 'ruby-devel']
 $os_spec_packagelist = $facts['osfamily'] ? {
-  'redhat' => ['python34', 'ansible', 'bind-utils', 'python34-devel'],
+  'redhat' => ['python34', 'ansible', 'bind-utils', 'python34-devel', 'python-devel', 'openssl-devel'],
   'debian' => ['dnsutils'],
   default  => ['WhatWereYouThinking?ThisCannotRunOnThisOS'],
 }
